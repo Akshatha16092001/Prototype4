@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -6,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody playerRb;       // Reference to the player's Rigidbody
     private GameObject focalPoint;    // Reference to the focal point for camera direction
     private float forwardInput;       // Input from player (W/S or Up/Down keys)
+    public bool hasPowerup = false;
 
     void Start()
     {
@@ -20,5 +22,13 @@ public class PlayerController : MonoBehaviour
 
         // Move the player in the direction the camera (focal point) is facing
         playerRb.AddForce(focalPoint.transform.forward * speed * forwardInput);
+    }
+    private void OggerEnter(Collider other)
+    {
+        if(other.CompareTag("Powerup"))
+        {
+            hasPowerup = true;
+            Destroy(other.gameObject);
+        }
     }
 }
