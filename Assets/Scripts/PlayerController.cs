@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private float forwardInput;       // Input from player (W/S or Up/Down keys)
     public bool hasPowerup = false;
     private float powerUpStrength = 15.0f;
+    public GameObject powerupIndicator;
 
     void Start()
     {
@@ -25,12 +26,14 @@ public class PlayerController : MonoBehaviour
         // Move the player in the direction the camera (focal point) is facing
         playerRb.AddForce(focalPoint.transform.forward * speed * forwardInput);
         Debug.Log("Start");
+        powerupIndicator.transform.position = transform.position + new Vector3(0,-0.5f,0);
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Powerup"))
         {
             hasPowerup = true;
+            powerupIndicator.gameObject.SetActive(true);
             Destroy(other.gameObject);
             StartCoroutine(PowerupCountdownRoutine());
         }
@@ -39,6 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(7);
         hasPowerup = false;
+        powerupIndicator.gameObject.SetActive(false);
 
     }
     private void OnCollisionEnter(Collision collision)
