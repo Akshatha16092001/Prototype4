@@ -22,13 +22,23 @@ public class PlayerController : MonoBehaviour
 
         // Move the player in the direction the camera (focal point) is facing
         playerRb.AddForce(focalPoint.transform.forward * speed * forwardInput);
+        Debug.Log("Start");
     }
-    private void OggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Powerup"))
+        if (other.CompareTag("Powerup"))
         {
             hasPowerup = true;
             Destroy(other.gameObject);
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("OnCollisionEnter hasPowerup=" + hasPowerup);
+        
+        if(collision.gameObject.CompareTag("Enemy")&& hasPowerup)
+        {
+            Debug.Log("Collided with:" + collision.gameObject.name + "with powerupset to" + hasPowerup);
         }
     }
 }
